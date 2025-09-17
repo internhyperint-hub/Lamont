@@ -2,7 +2,8 @@ import "./App.css";
 import React from "react";
 import ProductPage from "./Component/ProductPage";
 import Reviews from "./Component/Reviews";
-import Breakdown from "./Component/Breakdown";
+import Breakdown
+ from "./Component/Breakdown";
 
 function App() {
   return (

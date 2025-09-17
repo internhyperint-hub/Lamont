@@ -1,58 +1,67 @@
-import React from "react";
+import { Users, TrendingUp } from 'lucide-react';
 
 const ProductProofBanner = () => {
   return (
-    <div className="rounded-md p-3 text-black shadow-lg w-[100%] h-[70px] flex items-center justify-between bg-gray-50 border-1 border-gray-300">
-      {/* Left side - Star Icon and Rating Info */}
-      <div className="flex items-center gap-4">
-        {/* Star Icon Circle */}
-        <div className="bg-orange-500 rounded-full w-10 h-10 flex items-center justify-center shadow-md flex-shrink-0">
-          <svg
-            className="w-5 h-5 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        </div>
-
-        {/* Rating and Reviews */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="flex text-yellow-300">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="w-4 h-4 fill-current"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-            <span className="text-lg font-bold">4.8</span>
+    <div
+      className="flex items-center justify-center mb-8 py-4  border-t border-b bg-gradient-to-r from-transparent via-amber-50/20 to-transparent"
+      style={{
+        borderColor: "rgba(212, 165, 116, 0.15)",
+      }}
+    >
+      <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className="text-base drop-shadow-sm transition-transform hover:scale-110 text-[#c7aa62]"
+                style={{
+                  textShadow: "0 1px 2px rgba(199, 170, 98, 0.3)"
+                }}
+              >
+                ★
+              </span>
+            ))}
           </div>
-        </div>
-      </div>
-
-      {/* Middle - Sales Info */}
-      <div className="flex items-center gap-1">
-        <div className="bg-orange-500 rounded-full w-2 h-2"></div>
-        <span className="text-sm">
-          <span className="font-bold text-orange-200">240 sold </span>
-          <span className="ml-2">last 30 days</span>
-        </span>
-      </div>
-
-      {/* Right side - Progress Bar and Green Indicator */}
-      <div className="flex items-center gap-3">
-        {/* Progress Bar */}
-        <div className="w-24 bg-gray-200 rounded-full h-2">
-          <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full w-3/4"></div>
+          <span
+            className="font-medium text-lg ml-2"
+            style={{ color: "#2c2c2c" }}
+          >
+            4.8
+          </span>
         </div>
 
-        {/* Green dot indicator */}
-        <div className="bg-green-400 rounded-full w-3 h-3 flex-shrink-0"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-px h-3 bg-gradient-to-b from-transparent via-amber-400/50 to-transparent"></div>
+          <div className="w-1.5 h-1.5 bg-amber-400/70 rounded-full my-0.5"></div>
+          <div className="w-px h-3 bg-gradient-to-b from-transparent via-amber-400/50 to-transparent"></div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Users
+            className="w-4 h-4"
+            style={{ color: "#d4a574" }}
+          />
+          <span className="text-sm font-medium" style={{ color: "#666666" }}>
+            <span className="font-bold text-base text-[#c7aa62]">198</span> reviews
+          </span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="w-px h-3 bg-gradient-to-b from-transparent via-amber-400/50 to-transparent"></div>
+          <div className="w-1.5 h-1.5 bg-amber-400/70 rounded-full my-0.5"></div>
+          <div className="w-px h-3 bg-gradient-to-b from-transparent via-amber-400/50 to-transparent"></div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <TrendingUp
+            className="w-4 h-4"
+            style={{ color: "#22c55e" }}
+          />
+          <span className="text-sm font-medium" style={{ color: "#666666" }}>
+            <span className="font-bold text-base text-[#c7aa62]">280</span> sold this month
+          </span>
+        </div>
       </div>
     </div>
   );
