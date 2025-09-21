@@ -110,9 +110,8 @@ const ProductProofBanner = () => {
               <FontAwesomeIcon
                 key={star}
                 icon={faStar}
-                className={`text-sm text-gray-700 transition-all duration-300 hover:scale-110 cursor-default ${
-                  isHovered ? 'animate-pulse' : ''
-                }`}
+                className={`text-sm text-gray-700 transition-all duration-300 hover:scale-110 cursor-default ${isHovered ? 'animate-pulse' : ''
+                  }`}
                 style={{
                   filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))',
                   animationDelay: `${star * 0.1}s`,
@@ -157,9 +156,8 @@ const ProductProofBanner = () => {
       </div>
 
       {/* Gradient overlay on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-r from-blue-50/20 via-pink-50/20 to-blue-50/20 transition-opacity duration-500 ${
-        isHovered ? 'opacity-100' : 'opacity-0'
-      }`} />
+      <div className={`absolute inset-0 bg-gradient-to-r from-blue-50/20 via-pink-50/20 to-blue-50/20 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'
+        }`} />
     </div>
   );
 };

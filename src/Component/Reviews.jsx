@@ -18,17 +18,17 @@ const Reviews = () => {
         0% {
           transform: translate(-50%, -50%) scale(0.8);
           opacity: 1;
-          box-shadow: 0 0 0 0 rgba(135, 206, 235, 0.8);
+          box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.8);
         }
         70% {
-          transform: translate(-50%, -50%) scale(2);
-          opacity: 0.3;
-          box-shadow: 0 0 0 30px rgba(135, 206, 235, 0.2);
+          transform: translate(-50%, -50%) scale(1.5);
+          opacity: 0.6;
+          box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.3);
         }
         100% {
-          transform: translate(-50%, -50%) scale(2.5);
+          transform: translate(-50%, -50%) scale(2);
           opacity: 0;
-          box-shadow: 0 0 0 40px rgba(135, 206, 235, 0);
+          box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
         }
       }
 
@@ -36,68 +36,90 @@ const Reviews = () => {
         0% {
           transform: translate(-50%, -50%) scale(0.8);
           opacity: 1;
-          box-shadow: 0 0 0 0 rgba(255, 192, 203, 0.8);
+          box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8);
         }
         70% {
-          transform: translate(-50%, -50%) scale(2);
-          opacity: 0.3;
-          box-shadow: 0 0 0 30px rgba(255, 192, 203, 0.2);
+          transform: translate(-50%, -50%) scale(1.5);
+          opacity: 0.6;
+          box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.3);
         }
         100% {
-          transform: translate(-50%, -50%) scale(2.5);
+          transform: translate(-50%, -50%) scale(2);
           opacity: 0;
-          box-shadow: 0 0 0 40px rgba(255, 192, 203, 0);
+          box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
         }
       }
 
       .heart-wave-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        z-index: 5;
+        pointer-events: none;
+        isolation: isolate;
+        contain: strict;
+      }
+
+      .heart-image-container {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        isolation: isolate;
+        z-index: 10;
+      }
+
+      .heart-parent-container {
         position: relative;
+        overflow: visible;
+        isolation: isolate;
       }
 
       .heart-wave-container::before,
       .heart-wave-container::after {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 24px;
-        height: 24px;
+        top: 0;
+        left: 0;
+        width: 60px;
+        height: 60px;
         pointer-events: none;
-        z-index: -1;
+        z-index: 1;
         clip-path: path('M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z');
       }
 
       .heart-wave-container::before {
-        background: rgba(135, 206, 235, 0.6);
-        animation: heartWaveBlue 2s ease-out infinite;
+        display: none;
       }
 
       .heart-wave-container::after {
-        background: rgba(255, 192, 203, 0.6);
-        animation: heartWavePink 2s ease-out infinite;
-        animation-delay: 1s;
+        display: none;
       }
 
-      @keyframes heartbeat {
-        0% {
-          transform: scale(1);
-        }
-        14% {
-          transform: scale(1.1);
-        }
-        28% {
-          transform: scale(1);
-        }
-        42% {
-          transform: scale(1.1);
-        }
-        70% {
-          transform: scale(1);
-        }
-        100% {
-          transform: scale(1);
-        }
+      .heart-image-container {
+        position: absolute;
+        top: -25px;
+        right: -25px;
+        width: 50px;
+        height: 50px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+        overflow: visible;
+        pointer-events: none;
       }
+
+      .heart-parent-container:hover .heart-image-container {
+        opacity: 1;
+      }
+
 
       @keyframes gradientShift {
         0% { background-position: 0% 50%; }
@@ -117,24 +139,9 @@ const Reviews = () => {
   }, []);
 
   const getImageStyles = (reviewId) => {
-    if (hoveredCard === reviewId) {
-      return {
-        transform: 'scale(2.0)',
-        animation: 'heartbeat 1.2s ease-in-out infinite',
-        transition: 'all 0.5s ease',
-        filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))',
-        zIndex: 10
-      };
-    }
-    return {
-      transform: 'scale(1.0)',
-      transition: 'all 0.5s ease'
-    };
+    return {};
   };
 
-  const getImageContainerClass = (reviewId) => {
-    return hoveredCard === reviewId ? 'heart-wave-container' : '';
-  };
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('recent');
   const [filterBy, setFilterBy] = useState('all');
@@ -499,9 +506,9 @@ const Reviews = () => {
                 <button
                   key={filter.key}
                   onClick={() => setFilterBy(filter.key)}
-                  className={`px-3 py-1.5 text-xs font-medium transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md ${filterBy === filter.key
-                    ? 'bg-gradient-to-r from-[#c7aa62] to-amber-500 text-white shadow-lg'
-                    : 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-600 hover:from-[#c7aa62]/10 hover:to-amber-50 hover:text-[#c7aa62] border border-gray-200 hover:border-[#c7aa62]/30'
+                  className={`px-3 py-1.5 text-xs font-medium shadow-sm ${filterBy === filter.key
+                    ? 'bg-gray-600 text-white shadow-lg'
+                    : 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-600 hover:from-gray-100 hover:to-gray-200 hover:text-gray-700 border border-gray-200 hover:border-gray-300'
                     }`}
                   style={{ borderRadius: '5px' }}
                 >
@@ -557,8 +564,8 @@ const Reviews = () => {
             <div
               key={review.id}
               id={`review-${review.id}`}
-              className={`relative ${viewMode === 'grid'
-                ? 'bg-white rounded-lg p-5 shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 border border-gray-100 hover:border-gray-700/30'
+              className={`relative overflow-visible heart-parent-container ${viewMode === 'grid'
+                ? 'bg-white rounded-lg p-5 shadow-sm'
                 : 'bg-white rounded-lg shadow-sm'
                 }`}
               onMouseEnter={() => setHoveredCard(review.id)}
@@ -609,14 +616,12 @@ const Reviews = () => {
 
                       {/* Verified badge and product name */}
                       <div className="flex flex-col items-end space-y-1 relative">
-                        <div className={`absolute -top-8 -right-8 ${getImageContainerClass(review.id)}`}>
-                          <img src={image} alt="Badge" className="w-8 h-8 object-contain z-10"
-                            style={getImageStyles(review.id)} />
+                        <div className="heart-image-container">
+                          <img src={image} alt="Badge" className="w-full h-full object-contain" />
                         </div>
                         {review.verified && (
-                          <div className=" text-green-500 px-3 py-1 rounded-full shadow-md flex items-center border border-emerald-400/30" style={{marginRight: '30px'}}>
-
-                            <span className="text-[8px] font-bold tracking-wide">Verified</span>
+                          <div className="bg-green-50 text-green-600 px-2 py-1 rounded text-xs font-medium border border-green-200">
+                            Verified
                           </div>
                         )}
                       </div>
@@ -655,9 +660,9 @@ const Reviews = () => {
                                 <img
                                   src={photo}
                                   alt={`Review photo ${index + 1}`}
-                                  className="w-16 h-16 object-cover rounded-lg border border-gray-200 hover:border-gray-400 transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
+                                  className="w-16 h-16 object-cover rounded-lg border border-gray-200 cursor-pointer shadow-sm"
                                 />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-lg transition-all duration-300"></div>
+                                <div className="absolute inset-0 bg-black/0 rounded-lg"></div>
                               </div>
                             ))}
                           </div>
@@ -676,7 +681,7 @@ const Reviews = () => {
                                 : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                 }`}
                             >
-                              <ThumbsUp className={`w-3 h-3 group-hover:scale-105 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
+                              <ThumbsUp className={`w-3 h-3  ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
                                 }`} />
                               <span className="font-medium">
                                 {(helpfulClicks[review.id] || 0) + review.helpful}
@@ -697,7 +702,7 @@ const Reviews = () => {
                       <div className="mb-3">
                         <div className="flex items-center justify-end mt-2">
                           <div className="flex items-center space-x-3">
-                         
+
 
                             <button
                               onClick={() => handleHelpfulClick(review.id)}
@@ -706,7 +711,7 @@ const Reviews = () => {
                                 : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                 }`}
                             >
-                              <ThumbsUp className={`w-3 h-3 group-hover:scale-105 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
+                              <ThumbsUp className={`w-3 h-3  ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
                                 }`} />
                               <span className="font-medium">
                                 {(helpfulClicks[review.id] || 0) + review.helpful}
@@ -764,10 +769,9 @@ const Reviews = () => {
                           )}
                         </div>
                         <div className="flex items-center space-x-2">
-                          <div className="flex items-center space-x-1">
-                            <div className="flex">
-                              {renderStars(review.rating)}
-                            </div>
+                          <div className="flex items-center space-x-1">                            <div className="flex">
+                            {renderStars(review.rating)}
+                          </div>
                             <span className="text-sm font-bold text-gray-800">{review.rating}.0</span>
                           </div>
                         </div>
@@ -776,11 +780,10 @@ const Reviews = () => {
 
                     {/* Days ago in top right */}
                     <div className="flex flex-col items-end space-y-1 relative">
-                      <div className={`absolute -top-8 -right-8 ${getImageContainerClass(review.id)}`}>
-                        <img src={image} alt="Badge" className="w-8 h-8 object-contain z-10"
-                          style={getImageStyles(review.id)} />
+                      <div className="heart-image-container">
+                        <img src={image} alt="Badge" className="w-full h-full object-contain" />
                       </div>
-                      <span className="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full" style={{marginRight: '30px'}}>
+                      <span className="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
                         {getTimeAgo(review.date)}
                       </span>
                     </div>
@@ -818,9 +821,9 @@ const Reviews = () => {
                                 <img
                                   src={photo}
                                   alt={`Review photo ${index + 1}`}
-                                  className="w-12 h-12 object-cover rounded-md border border-gray-200 hover:border-gray-400 transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
+                                  className="w-12 h-12 object-cover rounded-md border border-gray-200 cursor-pointer shadow-sm"
                                 />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-md transition-all duration-300"></div>
+                                <div className="absolute inset-0 bg-black/0 rounded-md"></div>
                               </div>
                             ))}
                           </div>
@@ -841,7 +844,7 @@ const Reviews = () => {
                                   : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                   }`}
                               >
-                                <ThumbsUp className={`w-2.5 h-2.5 group-hover:scale-110 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
+                                <ThumbsUp className={`w-2.5 h-2.5  ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
                                   }`} />
                                 <span className="font-medium">
                                   {(helpfulClicks[review.id] || 0) + review.helpful}
@@ -876,7 +879,7 @@ const Reviews = () => {
                                   : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                   }`}
                               >
-                                <ThumbsUp className={`w-2.5 h-2.5 group-hover:scale-110 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
+                                <ThumbsUp className={`w-2.5 h-2.5  ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
                                   }`} />
                                 <span className="font-medium">
                                   {(helpfulClicks[review.id] || 0) + review.helpful}
