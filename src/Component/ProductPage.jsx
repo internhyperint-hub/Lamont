@@ -8,7 +8,7 @@ const ProductPage = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const productImages = [
-     'https://images.pexels.com/photos/965731/pexels-photo-965731.jpeg',
+    'https://images.pexels.com/photos/965731/pexels-photo-965731.jpeg',
     'https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg', // Main product image
     'https://images.pexels.com/photos/1190829/pexels-photo-1190829.jpeg', // Alternative view
     // Detail shot
@@ -21,11 +21,10 @@ const ProductPage = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`${size} ${
-              star <= Math.floor(rating)
+            className={`${size} ${star <= Math.floor(rating)
                 ? 'text-yellow-400 fill-current'
                 : 'text-gray-300'
-            }`}
+              }`}
           />
         ))}
       </div>
@@ -50,7 +49,7 @@ const ProductPage = () => {
             <div className="text-2xl font-bold text-[#D3853A]">SCENTVERSE</div>
             <div className="text-xs text-orange-500 ml-1">INDIA</div>
           </div>
-          
+
           <nav className="hidden md:flex space-x-8">
             <a href="#" className="text-gray-700 hover:text-gray-900">Home</a>
             <a href="#" className="text-gray-700 hover:text-gray-900">Catalog</a>
@@ -79,7 +78,7 @@ const ProductPage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Acqua Di Parma Blu Mediterraneo Ginepro Di Sardegna Eau De Toilette
           </h1>
-        
+
         </div>
 
         {/* Breadcrumb */}
@@ -97,9 +96,8 @@ const ProductPage = () => {
                 <button
                   key={index}
                   onClick={() => setSelectedImageIndex(index)}
-                  className={`w-20 h-20 border-2 rounded-lg overflow-hidden ${
-                    selectedImageIndex === index ? 'border-orange-500' : 'border-gray-200'
-                  }`}
+                  className={`w-20 h-20 border-2 rounded-lg overflow-hidden ${selectedImageIndex === index ? 'border-orange-500' : 'border-gray-200'
+                    }`}
                 >
                   <img
                     src={img}
@@ -158,7 +156,7 @@ const ProductPage = () => {
                   +
                 </button>
               </div>
-              
+
               <button className="flex-1 border-2 border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50">
                 Add To Cart
               </button>
@@ -189,7 +187,7 @@ const ProductPage = () => {
                   <strong>Estimated delivery:</strong> 5-7 Days from order date.
                 </span>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <RotateCcw className="w-5 h-5 text-gray-600" />
                 <span className="text-sm text-gray-700">
@@ -214,7 +212,7 @@ const ProductPage = () => {
           </div>
           <span className="text-sm font-medium">
             <span className="font-bold text-green-700">17</span>
-            <span className="text-gray-600"> live</span>
+            <span className="text-gray-600"> users viewing</span>
           </span>
         </div>
         {/* Subtle moving background */}
