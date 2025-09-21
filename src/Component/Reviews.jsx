@@ -1,9 +1,140 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, ThumbsUp, Filter, ChevronDown } from "lucide-react";
-import perfume from "../assets/perfume.png"
+import perfume from "../assets/perfume.png";
+import image from "../assets/image.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Reviews = () => {
   const [expandedReviews, setExpandedReviews] = useState({});
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Function to get image styles based on hover state
+  // Add CSS keyframes for alternating heart wave animation
+  const addHeartAnimation = () => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes heartWaveBlue {
+        0% {
+          transform: translate(-50%, -50%) scale(0.8);
+          opacity: 1;
+          box-shadow: 0 0 0 0 rgba(135, 206, 235, 0.8);
+        }
+        70% {
+          transform: translate(-50%, -50%) scale(2);
+          opacity: 0.3;
+          box-shadow: 0 0 0 30px rgba(135, 206, 235, 0.2);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(2.5);
+          opacity: 0;
+          box-shadow: 0 0 0 40px rgba(135, 206, 235, 0);
+        }
+      }
+
+      @keyframes heartWavePink {
+        0% {
+          transform: translate(-50%, -50%) scale(0.8);
+          opacity: 1;
+          box-shadow: 0 0 0 0 rgba(255, 192, 203, 0.8);
+        }
+        70% {
+          transform: translate(-50%, -50%) scale(2);
+          opacity: 0.3;
+          box-shadow: 0 0 0 30px rgba(255, 192, 203, 0.2);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(2.5);
+          opacity: 0;
+          box-shadow: 0 0 0 40px rgba(255, 192, 203, 0);
+        }
+      }
+
+      .heart-wave-container {
+        position: relative;
+      }
+
+      .heart-wave-container::before,
+      .heart-wave-container::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 24px;
+        height: 24px;
+        pointer-events: none;
+        z-index: -1;
+        clip-path: path('M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z');
+      }
+
+      .heart-wave-container::before {
+        background: rgba(135, 206, 235, 0.6);
+        animation: heartWaveBlue 2s ease-out infinite;
+      }
+
+      .heart-wave-container::after {
+        background: rgba(255, 192, 203, 0.6);
+        animation: heartWavePink 2s ease-out infinite;
+        animation-delay: 1s;
+      }
+
+      @keyframes heartbeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.1);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.1);
+        }
+        70% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    `;
+    if (!document.querySelector('style[data-heart-animation]')) {
+      style.setAttribute('data-heart-animation', 'true');
+      document.head.appendChild(style);
+    }
+  };
+
+  // Add animation on component mount
+  useEffect(() => {
+    addHeartAnimation();
+  }, []);
+
+  const getImageStyles = (reviewId) => {
+    if (hoveredCard === reviewId) {
+      return {
+        transform: 'scale(2.0)',
+        animation: 'heartbeat 1.2s ease-in-out infinite',
+        transition: 'all 0.5s ease',
+        filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))',
+        zIndex: 10
+      };
+    }
+    return {
+      transform: 'scale(1.0)',
+      transition: 'all 0.5s ease'
+    };
+  };
+
+  const getImageContainerClass = (reviewId) => {
+    return hoveredCard === reviewId ? 'heart-wave-container' : '';
+  };
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('recent');
   const [filterBy, setFilterBy] = useState('all');
@@ -45,11 +176,11 @@ const Reviews = () => {
       name: "Ravi K.",
       rating: 5,
       title: "Absolutely perfect for special occasions!",
-      comment: "Just received this yesterday and I'm blown away! The Mediterranean Breeze has this amazing fresh yet sophisticated scent. Perfect for my anniversary dinner tonight. The packaging was premium and delivery was super fast. Highly recommend!",
+      comment: "Just received this yesterday and I'm blown away! The DIJON has this amazing fresh yet sophisticated scent. Perfect for my anniversary dinner tonight. The packaging was premium and delivery was super fast. Highly recommend!",
       date: "2025-09-16",
       verified: true,
       helpful: 2,
-      productName: "Mediterranean Breeze",
+      productName: "DIJON",
       photos: ["https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=100&h=100&fit=crop"],
       sentiment: "positive",
       badges: ["Top Reviewer", "Early Adopter"]
@@ -86,11 +217,11 @@ const Reviews = () => {
       name: "Priya S.",
       rating: 5,
       title: "Authentic luxury at its finest!",
-      comment: "Amazing experience! This Mediterranean perfume has incredible notes of bergamot and cypress. Fast delivery to Delhi and perfect packaging. The longevity is outstanding - lasts 8+ hours. Already placed my second order!",
+      comment: "Amazing experience! This DIJON perfume has incredible notes of bergamot and cypress. Fast delivery to Delhi and perfect packaging. The longevity is outstanding - lasts 8+ hours. Already placed my second order!",
       date: "2024-01-15",
       verified: true,
       helpful: 12,
-      productName: "Mediterranean Breeze"
+      productName: "DIJON"
     },
     {
       id: 5,
@@ -107,12 +238,12 @@ const Reviews = () => {
       id: 6,
       name: "Sneha G.",
       rating: 5,
-      title: "Like a Mediterranean vacation!",
-      comment: "This site has an amazing collection! This perfume transports me to a Mediterranean coast. The juniper and cypress notes are incredible. Very particular about fragrances and this delivers on authenticity. The bottle design is elegant too!",
+      title: "Like a DIJON vacation!",
+      comment: "This site has an amazing collection! This perfume transports me to a DIJON coast. The juniper and cypress notes are incredible. Very particular about fragrances and this delivers on authenticity. The bottle design is elegant too!",
       date: "2024-01-10",
       verified: true,
       helpful: 15,
-      productName: "Mediterranean Breeze",
+      productName: "DIJON",
       photos: ["https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=100&h=100&fit=crop"],
       sentiment: "positive"
     },
@@ -133,11 +264,11 @@ const Reviews = () => {
       name: "Ananya S.",
       rating: 5,
       title: "Friends keep asking about my signature scent!",
-      comment: "Excellent fragrance! This Mediterranean scent is absolutely divine. I've tried many perfumes over the years, but this stands out. The fresh juniper notes are perfect for daily wear and the elegant bottle looks premium on my dresser.",
+      comment: "Excellent fragrance! This DIJON scent is absolutely divine. I've tried many perfumes over the years, but this stands out. The fresh juniper notes are perfect for daily wear and the elegant bottle looks premium on my dresser.",
       date: "2024-01-05",
       verified: true,
       helpful: 20,
-      productName: "Mediterranean Breeze",
+      productName: "DIJON",
       photos: ["https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=100&h=100&fit=crop", "https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=100&h=100&fit=crop"],
       sentiment: "positive",
       badges: ["Expert Reviewer"]
@@ -147,11 +278,11 @@ const Reviews = () => {
       name: "Vikram R.",
       rating: 5,
       title: "Worth the money - develops beautifully",
-      comment: "Good quality fragrance at decent value. Initially seemed light, but develops beautifully throughout the day. The Mediterranean notes become more prominent after a few hours. Overall satisfied with the purchase.",
+      comment: "Good quality fragrance at decent value. Initially seemed light, but develops beautifully throughout the day. The DIJON notes become more prominent after a few hours. Overall satisfied with the purchase.",
       date: "2024-01-03",
       verified: true,
       helpful: 4,
-      productName: "Mediterranean Breeze",
+      productName: "DIJON",
       photos: ["https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=100&h=100&fit=crop", "https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=100&h=100&fit=crop"],
       sentiment: "positive"
     },
@@ -197,7 +328,7 @@ const Reviews = () => {
       date: "2023-12-20",
       verified: true,
       helpful: 2,
-      productName: "Mediterranean Breeze"
+      productName: "DIJON"
     },
     {
       id: 11,
@@ -222,7 +353,7 @@ const Reviews = () => {
       date: "2023-12-15",
       verified: true,
       helpful: 5,
-      productName: "Mediterranean Breeze",
+      productName: "DIJON",
       photos: ["https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=100&h=100&fit=crop"],
       sentiment: "positive",
       badges: ["Loyal Customer"]
@@ -275,13 +406,12 @@ const Reviews = () => {
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => (
-      <span
+      <FontAwesomeIcon
         key={index}
-        className={`text-base ${index < rating ? "text-yellow-400" : "text-gray-300"
+        icon={faStar}
+        className={`text-xs ${index < rating ? "text-black" : "text-gray-300"
           }`}
-      >
-        ★
-      </span>
+      />
     ));
   };
 
@@ -318,7 +448,7 @@ const Reviews = () => {
   ).toFixed(1);
 
   return (
-    <div className="w-9/10 mx-auto px-4">
+    <div className="w-full mx-auto px-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
         {/* Header Section */}
         <div className="mb-12">
@@ -388,7 +518,7 @@ const Reviews = () => {
             <button
               onClick={() => setViewMode('grid')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === 'grid'
-                ? 'bg-[#c7aa62] text-white shadow-sm'
+                ? 'bg-gray-700 text-white shadow-sm'
                 : 'text-gray-600 hover:bg-gray-100'
                 }`}
             >
@@ -397,7 +527,7 @@ const Reviews = () => {
             <button
               onClick={() => setViewMode('list')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${viewMode === 'list'
-                ? 'bg-[#c7aa62] text-white shadow-sm'
+                ? 'bg-gray-700 text-white shadow-sm'
                 : 'text-gray-600 hover:bg-gray-100'
                 }`}
             >
@@ -411,7 +541,7 @@ const Reviews = () => {
           <p className="text-gray-600">
             Showing {indexOfFirstReview + 1}-{Math.min(indexOfLastReview, sortedReviews.length)} of {sortedReviews.length} reviews
             {filterBy !== 'all' && (
-              <span className="ml-2 text-[#c7aa62] font-medium">
+              <span className="ml-2 text-gray-700 font-medium">
                 (filtered from {mockReviews.length} total)
               </span>
             )}
@@ -427,18 +557,20 @@ const Reviews = () => {
             <div
               key={review.id}
               id={`review-${review.id}`}
-              className={`transition-all duration-300 border border-gray-100 hover:border-[#c7aa62]/30 relative ${viewMode === 'grid'
-                ? 'bg-white rounded-lg p-5 shadow-sm hover:shadow-lg transform hover:-translate-y-1'
-                : 'bg-white rounded-lg shadow-sm border-l-4 border-l-[#c7aa62]/20'
+              className={`relative ${viewMode === 'grid'
+                ? 'bg-white rounded-lg p-5 shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 border border-gray-100 hover:border-gray-700/30'
+                : 'bg-white rounded-lg shadow-sm'
                 }`}
+              onMouseEnter={() => setHoveredCard(review.id)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
               {viewMode === 'list' ? (
                 // Enhanced List View Layout
                 <div className="flex gap-5 p-4">
                   {/* Left Section: User Avatar */}
                   <div className="flex-shrink-0 flex flex-col items-center">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c7aa62]/15 to-amber-50 flex items-center justify-center border border-[#c7aa62]/10 shadow-sm">
-                      <User className="w-5 h-5 text-[#c7aa62]/80" />
+                    <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 ">
+                      <User className="w-3 h-3 text-gray-700" />
                     </div>
                   </div>
 
@@ -448,7 +580,7 @@ const Reviews = () => {
                     <div className="flex items-start justify-between mb-1">
                       <div>
                         <div className="flex items-center space-x-3 mb-2">
-                          <span className="font-semibold text-gray-800 text-base">{review.name}</span>
+                          <span className=" text-gray-800 text-base">{review.name}</span>
                           {/* Reviewer badges in list view */}
                           {review.badges && review.badges.length > 0 && (
                             <div className="flex gap-1">
@@ -468,7 +600,7 @@ const Reviews = () => {
                         </div>
                         {/* Stars below name */}
                         <div className="flex items-center space-x-2">
-                          <div className="flex">
+                          <div className="flex text-shadow-2xs">
                             {renderStars(review.rating)}
                           </div>
                           <span className="text-sm font-bold text-gray-800">{review.rating}.0</span>
@@ -476,13 +608,15 @@ const Reviews = () => {
                       </div>
 
                       {/* Verified badge and product name */}
-                      <div className="flex flex-col items-end space-y-1">
+                      <div className="flex flex-col items-end space-y-1 relative">
+                        <div className={`absolute -top-8 -right-8 ${getImageContainerClass(review.id)}`}>
+                          <img src={image} alt="Badge" className="w-8 h-8 object-contain z-10"
+                            style={getImageStyles(review.id)} />
+                        </div>
                         {review.verified && (
-                          <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-1 rounded-full shadow-md flex items-center space-x-1.5 border border-emerald-400/30">
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                            <span className="text-[10px] font-bold tracking-wide">VERIFIED</span>
+                          <div className=" text-green-500 px-3 py-1 rounded-full shadow-md flex items-center border border-emerald-400/30" style={{marginRight: '30px'}}>
+
+                            <span className="text-[8px] font-bold tracking-wide">Verified</span>
                           </div>
                         )}
                       </div>
@@ -490,23 +624,21 @@ const Reviews = () => {
 
                     {/* Review title and content */}
                     <div className="flex items-start justify-between mb-2">
-                      <h5 className="font-semibold text-gray-800 text-base leading-tight flex-1">
+                      <h5 className="text-gray-600 text-sm italic leading-tight flex-1">
                         {review.title}
                       </h5>
                     </div>
                     <div className="relative mb-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className={`text-gray-600 leading-relaxed text-sm font-normal border-l-2 border-[#c7aa62]/20 pl-4 bg-gray-50/30 py-3 rounded-r-lg transition-all duration-300 overflow-hidden flex-1 ${expandedReviews[review.id] ? 'max-h-24' : 'max-h-20'}`}>
-                          {expandedReviews[review.id]
-                            ? review.comment
-                            : truncateText(review.comment, 150)}
-                        </div>
+                      <div className={`text-gray-600 leading-relaxed text-xs font-normal  pl-4  transition-all duration-300 overflow-hidden ${expandedReviews[review.id] ? 'max-h-24' : 'max-h-20'}`}>
+                        {expandedReviews[review.id]
+                          ? review.comment
+                          : truncateText(review.comment, 150)}
                         {review.comment.length > 150 && (
                           <button
                             onClick={() => toggleReadMore(review.id)}
-                            className="text-[#c7aa62] hover:text-[#b8965a] font-medium text-xs px-2 py-1 bg-white/80 rounded-md border border-[#c7aa62]/20 hover:bg-[#c7aa62]/10 transition-all duration-200 shadow-sm flex-shrink-0"
+                            className="text-gray-500 hover:text-gray-700 text-xs underline ml-1"
                           >
-                            {expandedReviews[review.id] ? "Show less" : "Read more"}
+                            {expandedReviews[review.id] ? "show less" : "more"}
                           </button>
                         )}
                       </div>
@@ -523,7 +655,7 @@ const Reviews = () => {
                                 <img
                                   src={photo}
                                   alt={`Review photo ${index + 1}`}
-                                  className="w-16 h-16 object-cover rounded-lg border border-gray-200 hover:border-[#c7aa62] transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
+                                  className="w-16 h-16 object-cover rounded-lg border border-gray-200 hover:border-gray-400 transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-lg transition-all duration-300"></div>
                               </div>
@@ -532,7 +664,7 @@ const Reviews = () => {
 
                           {/* Perfume name and buttons inline with photos */}
                           <div className="flex items-center space-x-3 ml-4">
-                            <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-[#c7aa62] bg-[#c7aa62]/10 px-2 py-1 rounded-full">
+                            <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
                               <img src={perfume} alt="Perfume" className="w-3 h-3 object-contain" />
                               <span>{review.productName}</span>
                             </span>
@@ -540,8 +672,8 @@ const Reviews = () => {
                             <button
                               onClick={() => handleHelpfulClick(review.id)}
                               className={`inline-flex items-center space-x-1 transition-all text-xs group px-2 py-1 rounded-md ${helpfulClicks[review.id] > 0
-                                ? 'bg-[#c7aa62] text-white shadow-sm hover:bg-[#b8965a]'
-                                : 'bg-gray-100 text-gray-600 hover:text-[#c7aa62] hover:bg-[#c7aa62]/10'
+                                ? 'bg-gray-700 text-white shadow-sm hover:bg-gray-800'
+                                : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                 }`}
                             >
                               <ThumbsUp className={`w-3 h-3 group-hover:scale-105 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
@@ -565,16 +697,13 @@ const Reviews = () => {
                       <div className="mb-3">
                         <div className="flex items-center justify-end mt-2">
                           <div className="flex items-center space-x-3">
-                            <span className="inline-flex items-center space-x-1 text-[10px] font-medium text-[#c7aa62] bg-[#c7aa62]/10 px-2 py-1 rounded-full">
-                              <img src={perfume} alt="Perfume" className="w-3 h-3 object-contain" />
-                              <span>{review.productName}</span>
-                            </span>
+                         
 
                             <button
                               onClick={() => handleHelpfulClick(review.id)}
                               className={`inline-flex items-center space-x-1 transition-all text-xs group px-2 py-1 rounded-md ${helpfulClicks[review.id] > 0
-                                ? 'bg-[#c7aa62] text-white shadow-sm hover:bg-[#b8965a]'
-                                : 'bg-gray-100 text-gray-600 hover:text-[#c7aa62] hover:bg-[#c7aa62]/10'
+                                ? 'bg-gray-700 text-white shadow-sm hover:bg-gray-800'
+                                : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                 }`}
                             >
                               <ThumbsUp className={`w-3 h-3 group-hover:scale-105 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
@@ -594,7 +723,6 @@ const Reviews = () => {
                         </div>
                       </div>
                     )}
-
                   </div>
                 </div>
               ) : (
@@ -604,12 +732,12 @@ const Reviews = () => {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c7aa62]/15 to-amber-50 flex items-center justify-center border border-[#c7aa62]/10">
-                          <User className="w-5 h-5 text-[#c7aa62]/80" />
+                        <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
+                          <User className="w-3 h-3 text-gray-700" />
                         </div>
                         {review.verified && (
-                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
-                            <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full border border-white flex items-center justify-center shadow-lg">
+                            <svg className="w-1.5 h-1.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </div>
@@ -617,20 +745,20 @@ const Reviews = () => {
                       </div>
                       <div>
                         <div className="flex items-center space-x-2 mb-1">
-                          <span className="font-semibold text-gray-800 text-base">{review.name}</span>
+                          <span className="text-gray-800 text-base">{review.name}</span>
                           {/* Reviewer badges in grid view */}
                           {review.badges && review.badges.length > 0 && (
                             <div className="flex gap-1">
                               {review.badges.slice(0, 1).map((badge, index) => (
                                 <span
                                   key={index}
-                                  className="bg-purple-50 text-purple-600 text-[9px] px-2 py-0.5 rounded-full font-medium"
+                                  className="bg-purple-50 text-purple-600 text-[10px] px-2 py-1 rounded-full font-medium"
                                 >
                                   {badge}
                                 </span>
                               ))}
                               {review.badges.length > 1 && (
-                                <span className="text-[9px] text-gray-400">+{review.badges.length - 1}</span>
+                                <span className="text-[10px] text-gray-400">+{review.badges.length - 1}</span>
                               )}
                             </div>
                           )}
@@ -647,29 +775,33 @@ const Reviews = () => {
                     </div>
 
                     {/* Days ago in top right */}
-                    <span className="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
-                      {getTimeAgo(review.date)}
-                    </span>
+                    <div className="flex flex-col items-end space-y-1 relative">
+                      <div className={`absolute -top-8 -right-8 ${getImageContainerClass(review.id)}`}>
+                        <img src={image} alt="Badge" className="w-8 h-8 object-contain z-10"
+                          style={getImageStyles(review.id)} />
+                      </div>
+                      <span className="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full" style={{marginRight: '30px'}}>
+                        {getTimeAgo(review.date)}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Review Content */}
                   <div className="mb-3">
-                    <h5 className="font-semibold text-gray-800 text-base mb-2 leading-tight">
+                    <h5 className="text-gray-600 text-sm italic leading-tight mb-2">
                       {review.title}
                     </h5>
                     <div className="relative">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className={`text-gray-600 leading-relaxed text-xs font-normal bg-gray-50/30 py-3 px-3 rounded-md transition-all duration-300 overflow-hidden flex-1 ${expandedReviews[review.id] ? 'max-h-20' : 'max-h-16'}`}>
-                          {expandedReviews[review.id]
-                            ? review.comment
-                            : truncateText(review.comment, 100)}
-                        </div>
+                      <div className={`text-gray-600 leading-relaxed text-xs font-normal bg-gray-50/30 py-3 px-3 rounded-md transition-all duration-300 overflow-hidden ${expandedReviews[review.id] ? 'max-h-20' : 'max-h-16'}`}>
+                        {expandedReviews[review.id]
+                          ? review.comment
+                          : truncateText(review.comment, 100)}
                         {review.comment.length > 100 && (
                           <button
                             onClick={() => toggleReadMore(review.id)}
-                            className="text-[#c7aa62] hover:text-[#b8965a] font-medium text-xs px-2 py-1 bg-white/80 rounded-md border border-[#c7aa62]/20 hover:bg-[#c7aa62]/10 transition-all duration-200 shadow-sm flex-shrink-0"
+                            className="text-gray-500 hover:text-gray-700 text-xs underline ml-1"
                           >
-                            {expandedReviews[review.id] ? "Less" : "More"}
+                            {expandedReviews[review.id] ? "show less" : "more"}
                           </button>
                         )}
                       </div>
@@ -686,7 +818,7 @@ const Reviews = () => {
                                 <img
                                   src={photo}
                                   alt={`Review photo ${index + 1}`}
-                                  className="w-12 h-12 object-cover rounded-md border border-gray-200 hover:border-[#c7aa62] transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
+                                  className="w-12 h-12 object-cover rounded-md border border-gray-200 hover:border-gray-400 transition-all duration-300 cursor-pointer transform group-hover:scale-105 shadow-sm"
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-md transition-all duration-300"></div>
                               </div>
@@ -697,7 +829,7 @@ const Reviews = () => {
                           <div className="flex flex-col items-end space-y-1 ml-2">
                             <div className="flex items-center space-x-1.5">
                               <img src={perfume} alt="Perfume" className="w-3 h-3 object-contain" />
-                              <span className="text-[9px] font-medium text-[#c7aa62]">
+                              <span className="text-[9px] font-medium text-gray-700">
                                 {review.productName}
                               </span>
                             </div>
@@ -705,8 +837,8 @@ const Reviews = () => {
                               <button
                                 onClick={() => handleHelpfulClick(review.id)}
                                 className={`flex items-center space-x-1 transition-all text-[10px] group px-1.5 py-0.5 rounded-md ${helpfulClicks[review.id] > 0
-                                  ? 'bg-[#c7aa62] text-white shadow-sm hover:bg-[#b8965a]'
-                                  : 'bg-gray-100 text-gray-600 hover:text-[#c7aa62] hover:bg-[#c7aa62]/10'
+                                  ? 'bg-gray-700 text-white shadow-sm hover:bg-gray-800'
+                                  : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                   }`}
                               >
                                 <ThumbsUp className={`w-2.5 h-2.5 group-hover:scale-110 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''
@@ -732,7 +864,7 @@ const Reviews = () => {
                           <div className="flex items-center space-x-2">
                             <div className="flex items-center space-x-1.5">
                               <img src={perfume} alt="Perfume" className="w-3 h-3 object-contain" />
-                              <span className="text-[9px] font-medium text-[#c7aa62]">
+                              <span className="text-[9px] font-medium text-gray-700">
                                 {review.productName}
                               </span>
                             </div>
@@ -740,8 +872,8 @@ const Reviews = () => {
                               <button
                                 onClick={() => handleHelpfulClick(review.id)}
                                 className={`flex items-center space-x-1 transition-all text-[10px] group px-1.5 py-0.5 rounded-md ${helpfulClicks[review.id] > 0
-                                  ? 'bg-[#c7aa62] text-white shadow-sm hover:bg-[#b8965a]'
-                                  : 'bg-gray-100 text-gray-600 hover:text-[#c7aa62] hover:bg-[#c7aa62]/10'
+                                  ? 'bg-gray-700 text-white shadow-sm hover:bg-gray-800'
+                                  : 'bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200'
                                   }`}
                               >
                                 <ThumbsUp className={`w-2.5 h-2.5 group-hover:scale-110 transition-transform ${helpfulClicks[review.id] > 0 ? 'fill-current' : ''

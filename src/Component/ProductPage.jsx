@@ -1,225 +1,187 @@
 import React, { useState } from 'react';
-import { Star, ShoppingCart, Heart, Share2, Truck, RotateCcw, ChevronDown, Search, User } from 'lucide-react';
 import Banner from "./Banner"
+import { Search, User, ShoppingBag, ChevronDown, Minus, Plus, Star } from 'lucide-react';
 
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [showAllReviews, setShowAllReviews] = useState(false);
+  const [selectedSize, setSelectedSize] = useState('50 ML');
 
-  const productImages = [
-    'https://images.pexels.com/photos/965731/pexels-photo-965731.jpeg',
-    'https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg', // Main product image
-    'https://images.pexels.com/photos/1190829/pexels-photo-1190829.jpeg', // Alternative view
-    // Detail shot
-  ];
-
-
-  const StarRating = ({ rating, size = "w-4 h-4" }) => {
-    return (
-      <div className="flex">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className={`${size} ${star <= Math.floor(rating)
-                ? 'text-yellow-400 fill-current'
-                : 'text-gray-300'
-              }`}
-          />
-        ))}
-      </div>
-    );
-  };
+  const increaseQuantity = () => setQuantity(prev => prev + 1);
+  const decreaseQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Top Banner */}
-      <div className="bg-black text-white text-sm">
-        <div className="w-full mx-auto px-4 py-2 flex justify-between items-center">
-          <span>100% AUTHENTIC PERFUMES ONLY</span>
-          <span>FREE SHIPPING ON EVERY ORDER</span>
-          <span>Join Our Whatsapp Community for exclusive deals..</span>
-        </div>
-      </div>
-
       {/* Header */}
-      <div className="border-b">
-        <div className="w-full mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="text-2xl font-bold text-[#D3853A]">SCENTVERSE</div>
-            <div className="text-xs text-orange-500 ml-1">INDIA</div>
-          </div>
+      <header className="bg-white border-b">
+        {/* Top banner */}
+        <div className="bg-orange-100 text-center py-2">
+          <p className="text-sm text-orange-800">📦 Free Shipping on Order above ₹499.</p>
+        </div>
+        
+        {/* Main header */}
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Left navigation */}
+            <div className="flex items-center space-x-8">
+              <nav className="flex space-x-6">
+                <a href="#" className="text-gray-700 hover:text-black font-medium">MEN</a>
+                <a href="#" className="text-gray-700 hover:text-black font-medium">WOMEN</a>
+                <a href="#" className="text-gray-700 hover:text-black font-medium">UNISEX</a>
+                <div className="flex items-center space-x-1">
+                  <a href="#" className="text-gray-700 hover:text-black font-medium">SHOP BY</a>
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+                <div className="flex items-center space-x-1">
+                  <a href="#" className="text-gray-700 hover:text-black font-medium">VIBE</a>
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+                <div className="flex items-center space-x-1">
+                  <a href="#" className="text-gray-700 hover:text-black font-medium">ELEMENTS</a>
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+              </nav>
+            </div>
 
-          <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-gray-900">Home</a>
-            <a href="#" className="text-gray-700 hover:text-gray-900">Catalog</a>
-            <a href="#" className="text-gray-700 hover:text-gray-900">Contact</a>
+            {/* Logo */}
+            <div className="text-center">
+              <div className="bg-black text-white px-3 py-2 text-sm font-bold">
+                <div>LA</div>
+                <div>MONT</div>
+                <div className="text-xs">PERFUMES</div>
+              </div>
+            </div>
+
+            {/* Right icons */}
+            <div className="flex items-center space-x-4">
+              <Search className="w-5 h-5 text-gray-600" />
+              <User className="w-5 h-5 text-gray-600" />
+              <ShoppingBag className="w-5 h-5 text-gray-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary navigation */}
+        <div className="max-w-7xl mx-auto px-4 pb-4">
+          <div className="flex space-x-8">
+            <div className="flex items-center space-x-1">
+              <a href="#" className="text-gray-700 hover:text-black font-medium">FUNCTIONAL</a>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+            <div className="flex items-center space-x-1">
+              <a href="#" className="text-gray-700 hover:text-black font-medium">ABOUT US</a>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Product section */}
+      <main className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Product Image */}
+          <div className="flex justify-center">
             <div className="relative">
-              <a href="#" className="text-gray-700 hover:text-gray-900 flex items-center">
-                Men <ChevronDown className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-          </nav>
-
-          <div className="flex items-center space-x-4">
-            <Search className="w-5 h-5 text-gray-600" />
-            <span className="text-gray-700">Search</span>
-            <ShoppingCart className="w-5 h-5 text-gray-600" />
-            <span className="text-gray-700">Cart</span>
-            <User className="w-5 h-5 text-gray-600" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Product Title */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Acqua Di Parma Blu Mediterraneo Ginepro Di Sardegna Eau De Toilette
-          </h1>
-
-        </div>
-
-        {/* Breadcrumb */}
-        <div className="mb-8 text-sm text-gray-600">
-          <span>All</span> <span className="mx-2">›</span> <span>Acqua Di Parma Blu Mediterraneo Ginepro Di Sardegna Eau De Toilette</span>
-        </div>
-
-        {/* Product Section */}
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div className="flex gap-4">
-            {/* Thumbnail Images */}
-            <div className="flex flex-col space-y-2">
-              {productImages.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImageIndex(index)}
-                  className={`w-20 h-20 border-2 rounded-lg overflow-hidden ${selectedImageIndex === index ? 'border-orange-500' : 'border-gray-200'
-                    }`}
-                >
-                  <img
-                    src={img}
-                    alt={`Product view ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-
-            {/* Main Image */}
-            <div className="flex-1 border rounded-lg overflow-hidden">
               <img
-                src={productImages[selectedImageIndex]}
-                alt="Acqua Di Parma Blu Mediterraneo Ginepro Di Sardegna"
-                className="w-full h-full object-cover"
+                src="https://www.lamont.co.in/cdn/shop/files/dijon1.jpg?v=1731558888&width=1646"
+                alt="DIJON Signature Collection Unisex Perfume - 50ml"
+                className="w-full max-w-lg h-auto rounded-lg shadow-lg"
               />
             </div>
           </div>
 
-          {/* Product Info */}
+          {/* Product Details */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-3xl font-semibold italic text-gray-700 mb-3">
-                Acqua Di Parma Blu Mediterraneo Ginepro Di Sardegna Eau De Toilette
-              </h2>
-              <div className="mb-4">
-                <Banner />
-              </div>
-
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-3xl font-bold text-gray-900">Rs. 1,499.00</span>
-                <span className="text-xl text-gray-500 line-through">Rs. 3,444.00</span>
-              </div>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                DIJON Signature Collection Unisex Perfume - 50ml
+              </h1>
             </div>
+            <Banner />
 
-            {/* Product Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Product Type:</label>
+              <p className="text-3xl font-bold text-gray-900">Rs. 549.00</p>
+              <p className="text-sm text-gray-600">Taxes included.</p>
             </div>
 
-            {/* Quantity and Add to Cart */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center border border-gray-300 rounded-lg">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 hover:bg-gray-50"
+            {/* Size selection */}
+            <div>
+              <p className="text-sm font-medium text-gray-900 mb-3">Size</p>
+              <div className="flex space-x-2">
+                <button 
+                  className={`px-4 py-2 rounded-full text-sm font-medium ${selectedSize === '50 ML' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setSelectedSize('50 ML')}
                 >
-                  −
+                  50 ML
+                </button>
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div>
+              <p className="text-sm font-medium text-gray-900 mb-3">Quantity</p>
+              <div className="flex items-center border border-gray-300 rounded w-fit">
+                <button 
+                  onClick={decreaseQuantity}
+                  className="p-2 hover:bg-gray-100"
+                >
+                  <Minus className="w-4 h-4" />
                 </button>
                 <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-4 py-2 hover:bg-gray-50"
+                <button 
+                  onClick={increaseQuantity}
+                  className="p-2 hover:bg-gray-100"
                 >
-                  +
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
-
-              <button className="flex-1 border-2 border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50">
-                Add To Cart
-              </button>
             </div>
 
-            {/* Buy It Now */}
-            <button className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-900">
-              Buy It Now
-            </button>
-
-            {/* Wishlist and Share */}
-            <div className="flex items-center justify-between pt-4 border-t">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-                <Heart className="w-5 h-5" />
-                Add to wishlist
-              </button>
-              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-                <Share2 className="w-5 h-5" />
-                Share
-              </button>
-            </div>
-
-            {/* Delivery Info */}
-            <div className="space-y-3 pt-6 border-t">
-              <div className="flex items-center gap-3">
-                <Truck className="w-5 h-5 text-gray-600" />
-                <span className="text-sm text-gray-700">
-                  <strong>Estimated delivery:</strong> 5-7 Days from order date.
-                </span>
+            {/* Buttons */}
+            <div className="space-y-3">
+              <div className="relative">
+                <button className="w-full bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded font-medium hover:bg-gray-50 transition-colors">
+                  Add to cart
+                </button>
+                {/* Spin to Win overlay */}
+                <div className="absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 rounded-tr rounded-bl text-xs font-bold">
+                  Spin to Win 🎯
+                </div>
               </div>
+              <button className="w-full bg-black text-white py-3 px-6 rounded font-medium hover:bg-gray-800 transition-colors">
+                Buy it now
+              </button>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <RotateCcw className="w-5 h-5 text-gray-600" />
-                <span className="text-sm text-gray-700">
-                  <strong>Free Shipping & Returns:</strong> On orders above  $79
-                </span>
+            {/* Product description (you can add more details here) */}
+            <div className="pt-6 border-t border-gray-200">
+              <h3 className="font-medium text-gray-900 mb-3">Product Details</h3>
+              <p className="text-gray-600 text-sm">
+                Experience the bold and captivating scent of DIJON from LaMont Perfumes. 
+                This unisex fragrance combines warm and spicy notes to create a signature 
+                scent that's perfect for any occasion.
+              </p>
+            </div>
+
+            {/* Features */}
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                <span className="text-sm text-gray-600">Long-lasting fragrance</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                <span className="text-sm text-gray-600">Unisex appeal</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                <span className="text-sm text-gray-600">Signature collection</span>
               </div>
             </div>
           </div>
         </div>
-
-      </div>
-
-
-      {/* Active Users Indicator */}
-      <div className="fixed top-20 left-0 bg-gradient-to-r from-green-50/95 to-blue-50/95 backdrop-blur-md text-gray-700 px-3 py-2 rounded-br-lg shadow-lg border-r border-b border-green-200/40 hover:shadow-xl hover:scale-105 transition-all duration-300 z-50">
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            {/* Multiple pulse rings */}
-            <div className="absolute w-3 h-3 bg-green-400 rounded-full animate-ping opacity-75"></div>
-            <div className="absolute w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-          </div>
-          <span className="text-sm font-medium">
-            <span className="font-bold text-green-700">17</span>
-            <span className="text-gray-600"> users viewing</span>
-          </span>
-        </div>
-        {/* Subtle moving background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-green-100/20 to-blue-100/20 rounded-br-lg opacity-50"></div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default ProductPage;
+export default ProductPage; 

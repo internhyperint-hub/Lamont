@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import ReviewStatsPopup from "./ReviewStatsPopup";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Breakdown = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const mockReviews = [
     {
       id: 1,
       name: "Priya Sharma",
       rating: 5,
       comment:
-        "Amazing fragrance from SCENTVERSE! This Mediterranean scent is perfect for daily wear.",
+        "Amazing fragrance from SCENTVERSE! This DIJON scent is perfect for daily wear.",
       date: "2024-01-15",
       verified: true,
     },
@@ -27,7 +29,7 @@ const Breakdown = () => {
       name: "Sneha Gupta",
       rating: 5,
       comment:
-        "Love this perfume! Perfect Mediterranean fragrance. SCENTVERSE is fantastic!",
+        "Love this perfume! Perfect DIJON fragrance. SCENTVERSE is fantastic!",
       date: "2024-01-10",
       verified: true,
     },
@@ -62,7 +64,7 @@ const Breakdown = () => {
       name: "Kavya Nair",
       rating: 5,
       comment:
-        "Best perfume from SCENTVERSE! Authentic Mediterranean fragrance is amazing.",
+        "Best perfume from SCENTVERSE! Authentic DIJON fragrance is amazing.",
       date: "2024-08-30",
       verified: true,
     },
@@ -184,59 +186,44 @@ const Breakdown = () => {
       <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-100">
         <div className="mb-4">
 
-          <div className="flex justify-center">
-            <button
-              onClick={() => setIsPopupOpen(true)}
-              className="text-[#c7aa62] border border-[#c7aa62]/30 hover:border-[#c7aa62] bg-white hover:bg-[#c7aa62]/5 px-4 py-2 rounded-md transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
-            >
-              More Info
-            </button>
-          </div>
+        
         </div>
 
         {/* Rating Distribution */}
         <div className="mb-6">
 
           <div className="flex justify-center">
-            <div className="space-y-1 w-full max-w-md">
+            <div className="space-y-0.5 w-full max-w-md">
               {[5, 4, 3, 2, 1].map((rating) => (
-                <div key={rating} className="flex items-center space-x-3 group hover:bg-gradient-to-r hover:from-[#c7aa62]/5 hover:to-amber-50/30 p-1.5 rounded-md transition-all duration-300 cursor-pointer transform hover:scale-[1.01] hover:shadow-sm">
-                  <div className="flex items-center space-x-1 w-14">
-                    <div className="flex">
+                <div key={rating} className="flex items-center space-x-2 p-1 rounded-md">
+                  <div className="flex items-center space-x-2 w-16">
+                    <span className="text-sm font-medium text-gray-700 w-3">{rating}</span>
+                    <div className="flex gap-0.2">
                       {[...Array(5)].map((_, index) => (
-                        <span
+                        <FontAwesomeIcon
                           key={index}
-                          className={`text-xs transition-all duration-300 group-hover:scale-110 ${index < rating ? 'text-[#c7aa62] group-hover:text-amber-500' : 'text-gray-300'}`}
-                          style={{
-                            animationDelay: `${index * 0.1}s`
-                          }}
-                        >
-                          ★
-                        </span>
+                          icon={faStar}
+                          className={`text-xs ${index < rating ? 'text-gray-700' : 'text-gray-300'}`}
+                        />
                       ))}
                     </div>
                   </div>
 
-                  <div className="flex-1 bg-gray-200 rounded-full h-3 relative overflow-hidden group-hover:bg-gray-250">
+                  <div className="mx-6 flex-1 bg-gray-200 rounded-full h-4 relative overflow-hidden">
                     <div
-                      className="h-3 rounded-full transition-all duration-700 ease-out group-hover:shadow-inner"
+                      className="h-4 rounded-2xl bg-gray-700"
                       style={{
                         width: `${getBarWidth(ratingBreakdown[rating])}%`,
-                        background: "linear-gradient(90deg, #c7aa62 0%, #d4a574 50%, #f4d03f 100%)"
+                        
                       }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-pulse"></div>
-                    </div>
-                    <div className="absolute right-1 top-1/2 transform -translate-y-1/2 text-[10px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {((ratingBreakdown[rating] / stats.total) * 100).toFixed(0)}%
-                    </div>
+                    />
                   </div>
 
-                  <div className="text-xs text-gray-600 w-8 text-right font-medium group-hover:text-gray-800 group-hover:font-bold transition-all duration-300">
+                  <div className="text-xs text-gray-600 w-8 text-right font-medium">
                     {ratingBreakdown[rating]}
                   </div>
 
-                  <div className="text-[10px] text-gray-500 w-8 text-right group-hover:text-[#c7aa62] group-hover:font-semibold transition-all duration-300">
+                  <div className="text-xs text-gray-500 w-12 text-right">
                     {((ratingBreakdown[rating] / stats.total) * 100).toFixed(0)}%
                   </div>
                 </div>
@@ -245,15 +232,14 @@ const Breakdown = () => {
           </div>
         </div>
       </div>
-
-      <ReviewStatsPopup
+ {/* <ReviewStatsPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         stats={stats}
         recentCount={recentCount}
         ratingBreakdown={ratingBreakdown}
-      />
-    </div>
+      /> */}
+     </div> 
   );
 };
 
